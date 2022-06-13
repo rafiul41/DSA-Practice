@@ -1,0 +1,5 @@
+// 
+
+function ways(arr) {
+  return 
+}
