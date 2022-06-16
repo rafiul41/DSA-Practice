@@ -192,4 +192,3 @@ root.insertNode(1);
 root.insertNode(2);
 root.insertNode(3);
 
-console.log(12);
