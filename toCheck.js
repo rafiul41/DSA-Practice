@@ -1,4 +1,2 @@
-const a = 9;
-a >> 1;
-
-console.log(a);
+const str = 'sdf-asfd';
+console.log(str.indexOf('-'));

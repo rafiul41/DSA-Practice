@@ -1,195 +1,31 @@
-// Create node
-const Node = function(item){
-  this.item = item;
-  this.height = 1;
-  this.left = null;
-  this.right = null;
+function isDigit(char) {
+  if(char >= '0' && char <= '9') return true;
+  return false;
 }
 
-//AVL Tree
-const AVLTree = function(){
-  let root = null;
-  
-  //return height of the node
-  this.height = (N) => {
-    if (N === null){
-      return 0;
+function reorder(logs) {
+  let digitLogs = [], letterLogs = [];
+  for(let log of logs) {
+    const firstHyphenInd = log.indexOf('-');
+    if(isDigit(log.slice(firstHyphenInd + 1, firstHyphenInd + 2))) {
+      digitLogs.push(log);
+    } else {
+      letterLogs.push({
+        identifier: log.slice(0, firstHyphenInd),
+        content: log.slice(firstHyphenInd + 1, log.length)
+      });
     }
-    
-    return N.height;
   }
-  
-  //right rotate
-  this.rightRotate = (y) => {
-    let x = y.left;
-    let T2 = x.right;
-    x.right = y;
-    y.left = T2;
-    y.height = Math.max(this.height(y.left), this.height(y.right)) + 1;
-    x.height = Math.max(this.height(x.left), this.height(x.right)) + 1;
-    return x;
-  }
-  
-  //left rotate
-  this.leftRotate = (x) => {
-    let y = x.right;
-    let T2 = y.left;
-    y.left = x;
-    x.right = T2;
-    x.height = Math.max(this.height(x.left), this.height(x.right)) + 1;
-    y.height = Math.max(this.height(y.left), this.height(y.right)) + 1;
-    return y;
-  }
-  
-  // get balance factor of a node
-  this.getBalanceFactor = (N) => {
-    if (N == null){
-      return 0;
-    }
-    
-    return this.height(N.left) - this.height(N.right);
-  }
-  
-  
-  // helper function to insert a node
-  const insertNodeHelper = (node, item) => {
 
-    // find the position and insert the node
-    if (node === null){
-      return (new Node(item));
-    }
-    
-    if (item < node.item){
-      node.left = insertNodeHelper(node.left, item);
-    }else if (item > node.item){
-      node.right = insertNodeHelper(node.right, item);
-    }else{
-      return node;
-    }
-    
-    // update the balance factor of each node
-    // and, balance the tree
-    node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
-    
-    let balanceFactor = this.getBalanceFactor(node);
-    
-    if (balanceFactor > 1) {
-      if (item < node.left.item) {
-        return this.rightRotate(node);
-      } else if (item > node.left.item) {
-        node.left = this.leftRotate(node.left);
-        return this.rightRotate(node);
-      }
-    }
-    
-    if (balanceFactor < -1) {
-      if (item > node.right.item) {
-        return this.leftRotate(node);
-      } else if (item < node.right.item) {
-        node.right = this.rightRotate(node.right);
-        return this.leftRotate(node);
-      }
-    }
-    
-    return node;
-  }
-  
-  // insert a node
-  this.insertNode = (item) => {
-    // console.log(root);
-    root = insertNodeHelper(root, item);
-  }
-  
-  //get node with minimum value
-  this.nodeWithMimumValue = (node) => {
-    let current = node;
-    while (current.left !== null){
-      current = current.left;
-    }
-    return current;
-  }
-  
-  // delete helper
-  const deleteNodeHelper = (root, item) => {
+  letterLogs.sort((a, b) => {
+    if(a.content === b.content) return a.identifier < b.identifier ? 1 : -1;
+    return a.content < b.content ? 1 : -1;
+  });
 
-    // find the node to be deleted and remove it
-    if (root == null){
-      return root;
-    }
-    if (item < root.item){
-      root.left = deleteNodeHelper(root.left, item);
-    }else if (item > root.item){
-      root.right = deleteNodeHelper(root.right, item);
-    }else {
-      if ((root.left === null) || (root.right === null)) {
-        let temp = null;
-        if (temp == root.left){
-          temp = root.right;
-        }else{
-          temp = root.left;
-        }
-        
-        if (temp == null) {
-          temp = root;
-          root = null;
-        } else{
-          root = temp;
-        }
-      } else {
-        let temp = this.nodeWithMimumValue(root.right);
-        root.item = temp.item;
-        root.right = deleteNodeHelper(root.right, temp.item);
-      }
-    }
-    if (root == null){
-      return root;
-    }
-
-    // Update the balance factor of each node and balance the tree
-    root.height = Math.max(this.height(root.left), this.height(root.right)) + 1;
-    
-    let balanceFactor = this.getBalanceFactor(root);
-    if (balanceFactor > 1) {
-      if (this.getBalanceFactor(root.left) >= 0) {
-        return this.rightRotate(root);
-      } else {
-        root.left = this.leftRotate(root.left);
-        return this.rightRotate(root);
-      }
-    }
-    if (balanceFactor < -1) {
-      if (this.getBalanceFactor(root.right) <= 0) {
-        return this.leftRotate(root);
-      } else {
-        root.right = this.rightRotate(root.right);
-        return this.leftRotate(root);
-      }
-    }
-    return root;
-  }
-  
-  //delete a node
-  this.deleteNode = (item) => {
-    root = deleteNodeHelper(root, item);
-  }
-  
-  // print the tree in pre - order
-  this.preOrder = () => {
-    preOrderHelper(root);
-  }
-  
-  const preOrderHelper = (node) => {
-    if (node) {
-      console.log(node.item);
-      preOrderHelper(node.left);
-      preOrderHelper(node.right);
-    }
-  }
+  letterLogs = letterLogs.map(log => log.identifier + '-' + log.content);
+  return [...letterLogs, ...digitLogs];
 }
 
-const root = new AVLTree();
-root.insertNode(1);
-root.insertNode(2);
-root.insertNode(3);
-
-console.log(12);
+console.log(isDigit('4'));
+console.log(isDigit('a'));
+console.log(reorder(["dig1-8-1-5-1", "let1-art-can", "dig2-3-6", "let2-own-kit-dig", "let3-art-zero"]));
