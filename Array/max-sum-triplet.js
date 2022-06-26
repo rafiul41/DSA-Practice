@@ -131,7 +131,7 @@ class AVLTree {
   // Gives the closest value present in the tree
   // which is greater or equal to the given value
   getClosestLowerElement(val) {
-    let curr = this.root, ans = null, minPositiveDist = Number.MAX_SAFE_INTEGER;
+    let curr = this.root, ans, minPositiveDist = Number.MAX_SAFE_INTEGER;
     while(curr !== null) {
       // This must be positive
       const currDist = val - curr.val;
@@ -152,15 +152,24 @@ class AVLTree {
   }
 }
 
-let tree = new AVLTree();
-tree.insertVal(7);
-tree.insertVal(2);
-tree.insertVal(3);
-tree.insertVal(6);
-tree.insertVal(5);
-tree.insertVal(4);
-tree.insertVal(1);
+function maxSum(arr) {
+  let maxElementToLeft = Array(arr.length).fill(0);
+  maxElementToLeft[arr.length - 1] = arr[arr.length - 1];
+  for(let i = arr.length - 2; i >= 0; i--) {
+    maxElementToLeft[i] = Math.max(maxElementToLeft[i + 1], arr[i]);
+  }
 
-console.log(tree.getClosestLowerElement(6));
+  let tree = new AVLTree();
+  tree.insertVal(arr[0]);
 
-console.log('end');
+  let maxSum = Number.MIN_SAFE_INTEGER;
+  for(let i = 1; i < arr.length - 1; i++) {
+    let currSum = tree.getClosestLowerElement(arr[i]) + arr[i] + maxElementToLeft[i + 1];
+    tree.insertVal(arr[i]);
+    maxSum = Math.max(currSum, maxSum);
+  }
+
+  return maxSum;
+}
+
+console.log(maxSum([2, 5, 3, 1, 4, 9]));

@@ -1,2 +1,1 @@
-const str = 'sdf-asfd';
-console.log(str.indexOf('-'));
+console.log(parseInt(3.4));

@@ -32,3 +32,39 @@ let matrix = [
 rotate(matrix);
 
 console.log(matrix);
+
+// 1 --> 1
+
+// 1 2
+// 3 4
+// -->
+// 3 1
+// 4 2
+
+// 1 2 3
+// 4 5 6
+// 7 8 9
+// -->
+// 7 4 1
+// 8 5 2
+// 9 6 3
+
+// Algo
+// * iteration -- 0 - (row - 1) for half rows
+// * how to get positions for switching --
+// ex1:
+// 0, 0 --> 0, 2
+// 0, 2 --> 2, 2
+// 2, 2 --> 2, 0
+// 2, 0 --> 0, 0
+// ex2:
+// 0, 1 --> 1, 2
+// 1, 2 --> 2, 1
+// 2, 1 --> 1, 0
+// 1, 0 --> 0, 1
+
+// r, c --> c, len - r
+
+
+// * how to switch -- 2 tmp var
+
