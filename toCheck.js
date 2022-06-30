@@ -1,1 +1,3 @@
-console.log(parseInt(3.4));
+const a = [1, 2];
+a.shift();
+console.log(a);

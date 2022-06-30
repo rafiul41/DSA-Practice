@@ -19,44 +19,12 @@ function knapSack(weights, costs, ind, capacity, memo) {
   return memo[ind + '/' + capacity] = Math.min(op1, op2);
 }
 
-function knapSackIterative(weights, costs, capacity, dp) {
-  for(let i = 1; i <= costs.length; i++) {
-    for(let j = 1; j <= capacity; j++) {
-      let op1 = Number.MAX_SAFE_INTEGER;
-      if(j - weights[i - 1] >= 0) {
-        op1 = costs[i - 1] + dp[i][j - weights[i - 1]];
-      }
-      let op2 = dp[i - 1][j];
-      dp[i][j] = Math.min(op1, op2);
-    }
-  }
-}
-
 function getMinCost(friendCapacities, fillingCapacities, dishCosts) {
-  maxCapacity = Number.MIN_SAFE_INTEGER;
-  for(let capacity of friendCapacities) {
-    maxCapacity = Math.max(capacity, maxCapacity);
-  }
-  
-  const dp = [];
-  for(let i = 0; i <= dishCosts.length; i++) {
-    dp[i] = [];
-    for(let j = 0; j <= maxCapacity; j++) {
-      if(i === 0) {
-        dp[i][j] = Number.MAX_SAFE_INTEGER;
-      }
-      d[i][j] = 0;
-    }
-  }
-
-  dp[0][0] = 0;
-
-  knapSackIterative(fillingCapacities, dishCosts, maxCapacity, dp);
-
+  friendCapacities.sort((a, b) => b - a);
+  const memo = {};
   let ans = 0;
-
   for(let capacity of friendCapacities) {
-    ans += dp[dishCosts][capacity];
+    ans += knapSack(fillingCapacities, dishCosts, dishCosts.length - 1, capacity, memo);
   }
 
   return ans;
