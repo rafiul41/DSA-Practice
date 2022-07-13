@@ -1,15 +1,36 @@
-// The two parts will also have the same average as the average of the whole array
+function getMinimumTakenCntForAvg(ind, arr, sum, avg) {
+  if(ind >= arr.length) {
+    if(sum / taken === avg) return 0;
+    return 1000000000;
+  }
+  let op1 = 1 + getMinimumTakenCntForAvg(ind + 1, arr, sum + arr[ind], avg)
+  let op2 = getMinimumTakenCntForAvg(ind + 1, arr, sum, avg);
 
-// This will return One array
-function ways(arr, ind, taken = []) {
-  if(ind >= arr.length) return taken;
-
-  const op1 = [arr[ind], ...ways(arr, ind + 1, [arr[ind], ...taken])];
-  const op2 = ways(arr, ind + 1, taken);
-
-  return op1.length < op2.length ? op1 : op2;
+  return Math.min(op1, op2);
 }
 
-const arr = [1, 7, 29, 11];
-arr.sort((a, b) => a - b);
-console.log(ways(arr));
+function getPartitions(arr) {
+  let avg = arr.reduce((prevRes, curr) => prevRes + curr, 0);
+  avg /= arr.length;
+  if (avg !== parseInt(avg)) {
+    return [];
+  }
+  arr.sort((a, b) => a - b);
+  let memo = {};
+  console.log(getMinimumTakenCntForAvg(0, arr, 0, avg));
+}
+
+const arr = [1, 7, 15, 29, 11, 9];
+console.log(getPartitions(arr));
+
+// s1 / n1 = s2 / n2
+// s1 / n1 = (s - s1) / (n - n1)
+// s1 * (n - n1) = n1 * (s - s1)
+// s1 * n - n1 * s1 = n1 * s - s1 * n1
+// s1 * n = n1 * s
+
+// *** s1 = n1 * s / n
+
+// I have total sum
+// s1 must be a non-negative integer as given numbers are integers
+
