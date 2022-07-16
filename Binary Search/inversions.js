@@ -51,7 +51,7 @@ class AVLTree {
   _update(node) {
     node.height =
       1 + Math.max(this._getHeight(node.right), this._getHeight(node.left));
-    node.nodeCnt = this._getNodeCnt(node.right) + this._getNodeCnt(node.left) + 1;
+    node.nodeCnt = this._getNodeCnt(node.right) + this._getNodeCnt(node.left);
   }
 
   _getHeight(node) {
@@ -133,35 +133,13 @@ class AVLTree {
 
     return newParent;
   }
-  // Gives the closest value present in the tree
-  // which is greater or equal to the given value
-  getClosestLowerElement(val) {
-    let curr = this.root, ans = null, minPositiveDist = Number.MAX_SAFE_INTEGER;
-    while(curr !== null) {
-      // This must be positive
-      const currDist = val - curr.val;
-      if(currDist === 0) return val;
-      // distance positive means we need to search for more closer values to the right
-      if(currDist > 0) {
-        if(currDist < minPositiveDist) {
-          minPositiveDist = currDist;
-          ans = curr.val;
-        }
-        curr = curr.right;
-      } else {
-        curr = curr.left;
-      }
-    }
-
-    return ans;
-  }
 
   _getNodeCntGreaterOrEqualThanK(root, val) {
     if(root === null) return 0;
     if(root.val >= val) {
-      return this._getNodeCntGreaterOrEqualThanK(root.left, val) + 1 + this._getNodeCnt(root.right);
+      return this._getNodeCntGreaterOrEqualThanK(root.left) + 1 + this._getNodeCnt(root.right);
     }
-    return this._getNodeCntGreaterOrEqualThanK(root.right, val);
+    return this._getNodeCntGreaterOrEqualThanK(root.left);
   }
 
   // First we need to find the closest element present in the tree lower or equal than given val
@@ -170,15 +148,16 @@ class AVLTree {
   }
 }
 
-let tree = new AVLTree();
-tree.insertVal(7);
-tree.insertVal(2);
-tree.insertVal(3);
-tree.insertVal(6);
-tree.insertVal(5);
-tree.insertVal(4);
-tree.insertVal(1);
+function getInversions(arr) {
+  let tree = new AVLTree();
+  tree.insertVal(arr[0]);
+  let ans = 0;
+  for(let i = 1; i < arr.length; i++) {
+    ans += tree.getNodeCntGreaterOrEqualThanVal(arr[i]);
+    tree.insertVal(arr[i]);
+  }
 
-console.log(tree.getClosestLowerElement(6));
+  return ans;
+}
 
-console.log('end');
+console.log(getInversions([2, 4, 1, 3, 5]));

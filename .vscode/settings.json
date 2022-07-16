@@ -1,6 +1,8 @@
 {
   "editor.tabSize": 2,
   "cSpell.words": [
+    "curr",
     "mult"
-  ]
+  ],
+  "editor.minimap.enabled": false
 }
