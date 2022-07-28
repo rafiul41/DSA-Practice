@@ -25,33 +25,34 @@ class AVLTree {
     return false;
   }
 
-  _contains(root, val) {
-    if (root === null) return false;
-    if (val > root.val) {
-      return this._contains(root.right, val);
-    } else if (val < root.val) {
-      return this._contains(root.left, val);
+  _contains(node, val) {
+    if (node === null) return false;
+    if (val > node.val) {
+      return this._contains(node.right, val);
+    } else if (val < node.val) {
+      return this._contains(node.left, val);
     } else {
       return true;
     }
   }
 
-  _insertNode(root, val) {
-    if (root === null) return new TreeNode(val);
-    if (val > root.val) {
-      root.right = this._insertNode(root.right, val);
+  _insertNode(node, val) {
+    if (node === null) return new TreeNode(val);
+    if (val > node.val) {
+      node.right = this._insertNode(node.right, val);
     } else {
-      root.left = this._insertNode(root.left, val);
+      node.left = this._insertNode(node.left, val);
     }
 
-    this._update(root);
-    return this._balance(root);
+    this._update(node);
+    return this._balance(node);
   }
 
   _update(node) {
     node.height =
       1 + Math.max(this._getHeight(node.right), this._getHeight(node.left));
-    node.nodeCnt = this._getNodeCnt(node.right) + this._getNodeCnt(node.left) + 1;
+    node.nodeCnt =
+      this._getNodeCnt(node.right) + this._getNodeCnt(node.left) + 1;
   }
 
   _getHeight(node) {
@@ -133,17 +134,75 @@ class AVLTree {
 
     return newParent;
   }
+
+  removeVal(val) {
+    const isValPresent = this._contains(this.root, val);
+    if (!isValPresent) {
+      this.root = this._removeNode(this.root, val);
+      return true;
+    }
+    return false;
+  }
+
+  _removeNode(node, val) {
+    if (node === null) return;
+    if (node.val > val) {
+      node.left = this._removeNode(node.left, val);
+    } else if (node.val < val) {
+      node.right = this._removeNode(node.right, val);
+    } else {
+      if (!node.right) {
+        return node.left;
+      } else if (!node.left) {
+        return node.right;
+      } else {
+        // It is better to delete node from the subtree which have more height for less balancing
+        if (this._getHeight(node.right) > this._getHeight(node.left)) {
+          let minVal = this._getMinVal(node.right);
+          node.val = minVal;
+          node.right = this._removeNode(node.right, minVal);
+        } else {
+          let maxVal = this._getMaxVal(node.left);
+          node.val = maxVal;
+          node.left = this._removeNode(node.left, maxVal);
+        }
+      }
+    }
+
+    this._update(node);
+    return this._balance(node);
+  }
+
+  _getMaxVal(node) {
+    let curr = node;
+    while (curr.right !== null) {
+      curr = curr.right;
+    }
+    return curr.val;
+  }
+
+  _getMinVal(node) {
+    let curr = node;
+    while (curr.left !== null) {
+      curr = curr.left;
+    }
+    return curr.val;
+  }
+
+  // ------------------------------- EXTRA FUNCTIONS ------------------------------
   // Gives the closest value present in the tree
   // which is greater or equal to the given value
   getClosestLowerElement(val) {
-    let curr = this.root, ans = null, minPositiveDist = Number.MAX_SAFE_INTEGER;
-    while(curr !== null) {
+    let curr = this.root,
+      ans = null,
+      minPositiveDist = Number.MAX_SAFE_INTEGER;
+    while (curr !== null) {
       // This must be positive
       const currDist = val - curr.val;
-      if(currDist === 0) return val;
+      if (currDist === 0) return val;
       // distance positive means we need to search for more closer values to the right
-      if(currDist > 0) {
-        if(currDist < minPositiveDist) {
+      if (currDist > 0) {
+        if (currDist < minPositiveDist) {
           minPositiveDist = currDist;
           ans = curr.val;
         }
@@ -156,17 +215,21 @@ class AVLTree {
     return ans;
   }
 
-  _getNodeCntGreaterOrEqualThanK(root, val) {
-    if(root === null) return 0;
-    if(root.val >= val) {
-      return this._getNodeCntGreaterOrEqualThanK(root.left, val) + 1 + this._getNodeCnt(root.right);
+  _getNodeCntGreaterThanK(root, val) {
+    if (root === null) return 0;
+    if (root.val > val) {
+      return (
+        this._getNodeCntGreaterThanK(root.left, val) +
+        1 +
+        this._getNodeCnt(root.right)
+      );
     }
-    return this._getNodeCntGreaterOrEqualThanK(root.right, val);
+    return this._getNodeCntGreaterThanK(root.right, val);
   }
 
   // First we need to find the closest element present in the tree lower or equal than given val
-  getNodeCntGreaterOrEqualThanVal(val) {
-    return this._getNodeCntGreaterOrEqualThanK(this.root, val);
+  getNodeCntGreaterThanVal(val) {
+    return this._getNodeCntGreaterThanK(this.root, val);
   }
 }
 
@@ -178,6 +241,7 @@ tree.insertVal(6);
 tree.insertVal(5);
 tree.insertVal(4);
 tree.insertVal(1);
+tree.removeVal(2);
 
 console.log(tree.getClosestLowerElement(6));
 

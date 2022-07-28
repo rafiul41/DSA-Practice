@@ -1,17 +1,10 @@
-function getInversions(arr) {
-  console.log('LEN:', arr.length);
-  let ans = 0;
-  for(let i = 1; i < arr.length; i++) {
-    let greaterOrEqualCnt = 0;
-    for(let j = i - 1; j >= 0; j--) {
-      if(arr[j] > arr[i]) {
-        greaterOrEqualCnt++;
-      }
-    }
-    console.log(greaterOrEqualCnt);
-    ans += greaterOrEqualCnt;
+function isAnyStringMatchRegex(strArr, moduleName) {
+  regexStr = `${moduleName}_[a-zA-Z0-9-]*_[a-zA-Z0-9-]*$`;
+  let regex = new RegExp(regexStr);
+  for(let i = 0; i < strArr.length; i++) {
+      if(regex.test(strArr[i])) return true;
   }
-  return ans;
+  return false;
 }
 
-console.log('ANS:', getInversions([84, 2, 37, 3, 67, 82, 19, 97, 91, 63, 27, 6, 13, 90, 63, 89, 100, 60, 47, 96, 54, 26, 64, 50, 71, 16, 6, 40, 84, 93, 67, 85, 16, 22, 60]));
+console.log(isAnyStringMatchRegex(['ajaira', 'tax_sdlkfjsa_askdfljasd'], 'tax'));

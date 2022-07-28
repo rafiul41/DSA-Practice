@@ -1,29 +1,33 @@
-function getRearranged(arr) {
-  let n = arr.length;
-  for(let i = 0; i < arr.length; i++) {
-    arr[i] = arr[i] + (arr[i] > i ? arr[arr[i]] * n : (arr[arr[i]] % n) * n);
-  }
-
-  for(let i = 0; i < arr.length; i++) {
-    arr[i] = parseInt(arr[i] / n);
-  }
-
-  return arr;
+function isPowerOf2(numb) {
+  let toCheck = 1 << (Math.log2(numb));
+  return (numb | toCheck) === toCheck;
 }
 
-console.log(getRearranged([1, 2, 3, 4, 0]));
-console.log(getRearranged([4, 0, 2, 1, 3]));
+function getPowerfulDivisors(arr) {
+  let max = arr.reduce((preRes, curr) => Math.max(preRes, curr), Number.MIN_SAFE_INTEGER);
+  let sqrt = Math.floor(Math.sqrt(max));
+  let divisorCnt = Array(max + 1).fill(0);
+  for(let i = 1; i <= sqrt; i++) {
+    for(let j = i; j <= max; j += i) {
+      let sqrtJ = Math.floor(Math.sqrt(j));
+      if(j % i === 0 && i <= sqrtJ) {
+        divisorCnt[j]++;
+        if(j / i !== i) {
+          divisorCnt[j]++;
+        }
+      }
+    }
+  }
+  
+  for(let i = 1; i < divisorCnt.length; i++) {
+    divisorCnt[i] = divisorCnt[i - 1] + (isPowerOf2(divisorCnt[i]) ? 1 : 0);
+  }
 
-// 1 0
-// --> 0 1
+  let ans = [];
+  for(let i = 0; i < arr.length; i++) {
+    ans.push(divisorCnt[arr[i]]);
+  }
+  return ans;
+}
 
-// 1 2 3 4 0
-// --> 2 3 4 0 1
-
-// ind: 0 1 2 3 4
-// val: 4 0 2 1 3
-// -->  3 4 2 0 1
-
-// 4 + (5 * 3) = 19
-// 19 % 5 = 4 (prev)
-// 19 / 5 = 3 (new)
+console.log(getPowerfulDivisors([5, 10]));

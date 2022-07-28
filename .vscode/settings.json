@@ -2,7 +2,16 @@
   "editor.tabSize": 2,
   "cSpell.words": [
     "curr",
-    "mult"
+    "mult",
+    "Occurence",
+    "upto"
   ],
-  "editor.minimap.enabled": false
+  "editor.minimap.enabled": false,
+  "files.associations": {
+    "ostream": "cpp"
+  },
+  "editor.defaultFormatter": "ms-vscode.cpptools",
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  }
 }
