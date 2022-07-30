@@ -2,64 +2,34 @@
 
 using namespace std;
 
-double distanceBetweenCenters(vector<int> &a, vector<int> &b)
-{
+double distanceBetweenPoints(vector<int>& a, vector<int>& b) {
   double x = a[0] - b[0];
   double y = a[1] - b[1];
   return sqrt(x * x + y * y);
 }
 
-bool isIntersecting(vector<int> &a, vector<int> &b, double radius) {
-  double dist = distanceBetweenCenters(a, b);
-  return dist < 2 * radius;
+bool check(vector<vector<int>> &centers, int b, int radius) {
+  vector<vector<int>> candidatePoints = getCandidatePoints(centers, );
 }
 
-bool isAllIntersecting(vector<vector<int>> &centers, int radius)
-{
-  for(int i = 0; i < centers.size() - 1; i++) {
-    for(int j = 0; j < centers.size(); j++) {
-      if(!isIntersecting(centers[i], centers[j], radius)) return false;
-    }
-  }
-
-  return true;
-}
-
-bool check(vector<vector<int>> &centers, int b, int d)
-{
-  for (int i = 0; i <= centers.size() - b; i++)
-  {
-    if (isAllIntersecting(centers, i, i + b - 1, d * 2))
-      return true;
-  }
-  return false;
-}
-
-int getFirstDay(vector<vector<int>> &centers, int b)
-{
+int getFirstDay(vector<vector<int>>& centers, int b) {
   int lo = INT_MAX, hi = INT_MIN, mid;
-  for (int i = 0; i < centers.size() - 1; i++)
-  {
-    for(int j = 0; j < centers.size(); j++) {
-      double centerDist = distanceBetweenCenters(centers[i], centers[i + 1]);
+  for (int i = 0; i < centers.size() - 1; i++) {
+    for (int j = 0; j < centers.size(); j++) {
+      double centerDist = distanceBetweenPoints(centers[i], centers[i + 1]);
       lo = min(lo, (int)floor(centerDist / 2));
       hi = min(hi, (int)ceil(centerDist / 2));
     }
   }
 
-  cout << lo << " " << hi << endl;
-
   int ans;
-  while (lo <= hi)
-  {
+  while (lo <= hi) {
     mid = lo + (hi - lo) / 2;
-    if (check(centers, b, mid))
-    {
+    if (check(centers, b, mid)) {
       ans = mid;
       hi = mid - 1;
     }
-    else
-    {
+    else {
       lo = mid + 1;
     }
   }
@@ -67,8 +37,7 @@ int getFirstDay(vector<vector<int>> &centers, int b)
   return ans;
 }
 
-int main()
-{
+int main() {
   vector<vector<int>> a;
   // a = {
   //     {8, 5},
@@ -103,7 +72,7 @@ int main()
       {156736, 580620},
       {507137, 194840},
       {665701, 508127},
-      {26162, 42107}};
+      {26162, 42107} };
   // cout << check(a, 20, 552808) << endl;
   cout << getFirstDay(a, 20) << endl;
 
