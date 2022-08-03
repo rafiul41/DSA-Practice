@@ -36,7 +36,7 @@ vector<int> func(int A, long B) {
 
 int main() {
   double a = 3.4;
-  int b = 3;
-  cout<< (a > b) <<endl;
+  double b = 3.1;
+  cout<< (a + b == 6.5) <<endl;
   return 0;
 }
