@@ -1,13 +1,11 @@
 function multiply(a, b, m) {
-  const maxPossibleTotalProductLength = a.toString().length + b.toString().length;
-  if(maxPossibleTotalProductLength > 15) {
-    a = BigInt(a);
-    b = BigInt(b);
-    m = BigInt(m);
-    return parseInt((a * b) % m);
+  if(a.toString().length + b.toString().length > 15) {
+    return parseInt((BigInt(a) * BigInt(b)) % BigInt(m));
   }
   return (a * b) % m;
 }
+
+console.log(multiply(1e9 + 654213, 1e9 + 465213, 1e9 + 7));
 
 function modExpo(b, p, m) {
   let res = 1, mult = b;

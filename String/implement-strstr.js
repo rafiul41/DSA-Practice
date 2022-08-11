@@ -19,9 +19,9 @@ function getPiTable(str) {
 
 function searchSubstring(str, pattern) {
   let piTable = getPiTable(pattern);
-  let i = 0, j = 0;
+  let i = 0, j = -1;
   while(i < str.length) {
-    if(str[i] === pattern[j]) {
+    if(str[i] === pattern[j + 1]) {
       i++; j++;
       if(j === pattern.length) {
         return i - pattern.length;
@@ -31,11 +31,11 @@ function searchSubstring(str, pattern) {
     if(j === 0) {
       i++;
     } else {
-      j = piTable[j - 1];
+      j = piTable[j];
     }
   }
 
   return -1;
 }
 
-console.log(searchSubstring('abcaabcab', 'abcab')); // 4
+console.log(searchSubstring('abcaabcab', 'ababa'));

@@ -35,8 +35,8 @@ vector<int> func(int A, long B) {
 }
 
 int main() {
-  double a = 3.4;
-  double b = 3.1;
-  cout<< (a + b == 6.5) <<endl;
+  long long a = 1000465213;
+  long long b = 1000654213;
+  cout<<(a * b) % 1000000007<<endl;
   return 0;
 }
