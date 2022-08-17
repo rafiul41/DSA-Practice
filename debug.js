@@ -1,41 +1,30 @@
-function getPiTable(str) {
-  let piTable = Array(str.length).fill(0);
-  if(str.length < 2) return piTable;
-  let i = 1, j = 0;
-  while(i < str.length) {
-    if(str[i] === str[j]) {
-      piTable[i] = j + 1;
-      i++; j++;
-      continue;
-    }
-    if(j === 0) {
-      i++;
-    } else {
-      j = piTable[j - 1];
-    }
+function func(A) {
+  A = A.trim();
+  A = A.split(' ')[0];
+  let digits = [];
+  for (let i = 0; i < 10; i++) {
+    digits.push(i.toString());
   }
-  return piTable;
+  let start = 0;
+  let isSignPresent = false;
+  let isPos = true;
+  if (A[start] === '+' || A[start] === '-') {
+    isSignPresent = true;
+    if(A[start] === '-') isPos = false;
+    start++;
+  }
+  if(start === A.length) return 0;
+  for (let i = start; i < A.length; i++) {
+    let z = A.charAt(i);
+    if (!digits.includes(z)) return 0;
+  }
+  let z = parseInt(isSignPresent ? A.slice(1) : A);
+  if(!isPos) z *= -1;
+  if (z.toString().length >= 10) {
+    if (z < -2147483648) return -2147483648;
+    if (z > 2147483647) return 2147483647;
+  }
+  return z;
 }
 
-function searchSubstring(str, pattern) {
-  let piTable = getPiTable(pattern);
-  let i = 0, j = 0;
-  while(i < str.length) {
-    if(str[i] === pattern[j]) {
-      i++; j++;
-      if(j === pattern.length) {
-        return i - pattern.length;
-      }
-      continue;
-    }
-    if(j === 0) {
-      i++;
-    } else {
-      j = piTable[j - 1];
-    }
-  }
-
-  return -1;
-}
-
-console.log(searchSubstring('abcaabcab', 'abcab')); // 4
+console.log(func('- 5 88C340185Q 71 8079 834617385 2898422X5297Z6900'));
