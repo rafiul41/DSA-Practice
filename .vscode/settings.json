@@ -8,7 +8,8 @@
   ],
   "editor.minimap.enabled": false,
   "files.associations": {
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "vector": "cpp"
   },
   "editor.defaultFormatter": "ms-vscode.cpptools",
   "[cpp]": {
