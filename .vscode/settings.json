@@ -4,7 +4,8 @@
     "curr",
     "mult",
     "Occurence",
-    "upto"
+    "upto",
+    "Vals"
   ],
   "editor.minimap.enabled": false,
   "files.associations": {
