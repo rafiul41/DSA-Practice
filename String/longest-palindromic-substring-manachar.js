@@ -30,6 +30,7 @@ function getLongestPalindromicSubstring(tmpStr) {
     for(let i = center + 1; i <= end; i++) {
       let mirrorPosVal = lenTable[2 * center - i];
       lenTable[i] = Math.min(mirrorPosVal, 2 * (end - i) + 1);
+      if(i - Math.floor(mirrorPosVal / 2) < start) continue;
       if(i + Math.floor(lenTable[i] / 2) === end) {
         newCenter = i;
         break;
