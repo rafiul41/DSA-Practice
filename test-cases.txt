@@ -1,6 +1,10 @@
-0000
-0100
-0111
-1001
+* for last line no extra space between words
+* 
 
-000
+Algo
+* find the words for current line
+  - take into account an additional space except the first one
+* Count the spaces needed after each word
+  - n slots, k should be distributed among the n slots
+  - so minimum Math.floor(k / n) is given on every slot
+  - first k % n will get one extra
