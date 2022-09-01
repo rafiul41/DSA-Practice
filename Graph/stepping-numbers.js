@@ -1,81 +1,91 @@
-function isSteppingNumber(numb) {
-  for(let i = 0; i < numb.length - 1; i++) {
-    if(Math.abs(numb[i] - numb[i + 1]) !== 1) return 0;
-  }
+let zeroCharCode = '0'.charCodeAt(0);
 
-  return 1;
-}
-
-function decrementStrNumb(str) {
-  return (parseInt(str) + 1).toString() ;
-}
-
-function incrementStrNumb(str) {
-  return (parseInt(str) + 1).toString() ;
-}
-
-function getNextStrings(str) {
-  const nextStrings = []
-  for(let i = 1; i < str.length - 1; i++) {
-    if(str[i - 1] === str[i + 1]) {
-      if(str[i - 1] !== '9') {
-        nextStrings.push(str.slice(0, i) + incrementStrNumb(str[i - 1]) + str.slice(i + 1));
+function getSteppingNumbersFromNumb(str) {
+  if(str.length <=1) return [];
+  let ans = [];
+  let right, left, toPush;
+  for(let i = 0; i < str.length; i++) {
+    if(i === 0) {
+      toPush = '';
+      right = str.charCodeAt(1) - zeroCharCode;
+      if(right + 1 <= 9) {
+        toPush = (right + 1).toString() + str.slice(1);
+        if(toPush !== str) ans.push(toPush);
+      } 
+      if(right - 1 >= 0) {
+        toPush = (right - 1).toString() + str.slice(1);
+        if(toPush !== str) ans.push(toPush);
       }
-      if(str[i - 1] !== '0') {
-        nextStrings.push(str.slice(0, i) + decrementStrNumb(str[i - 1]) + str.slice(i + 1));
+    } else if(i === str.length - 1) {
+      toPush = '';
+      left = str.charCodeAt(str.length - 2) - zeroCharCode;
+      if(left + 1 <= 9) {
+        toPush = str.slice(0, str.length - 1) + (left + 1).toString();
+        if(toPush !== str) ans.push(toPush);
+      } 
+      if(left - 1 >= 0) {
+        toPush = str.slice(0, str.length - 1) + (left - 1).toString();
+        if(toPush !== str) ans.push(toPush);
       }
-    }
-  }
-  if(str[1] !== '9') {
-    nextStrings.push(incrementStrNumb(str[1]) + str.slice(1));
-  }
-  if(str[1] !== '0') {
-    nextStrings.push(decrementStrNumb(str[1]) + str.slice(1));
-  }
-
-  if(str[str.length - 1] !== '9') {
-    nextStrings.push(str.slice(0, str.length - 1) + incrementStrNumb(str[1]));
-  }
-  if(str[str.length - 1] !== '0') {
-    nextStrings.push(str.slice(0, str.length - 1) + decrementStrNumb(str[1]));
-  }
-
-  return nextStrings;
-}
-
-function bfs(src, start, end) {
-  const visited = new Set();
-  visited.add(src);
-  let q = [];
-  q.push(src);
-  while(q.length > 0) {
-    let u = q[0];
-    q.shift();
-    const nextStrings = getNextStrings(u);
-    for(let str of nextStrings) {
-      const numb = parseInt(str);
-      if(!visited.has(str) && numb >= start && numb <= end) {
-        q.push(str);
-        visited.add(str);
+    } else {
+      left = str.charCodeAt(i - 1) - zeroCharCode;
+      right = str.charCodeAt(i + 1) - zeroCharCode;
+      if(left === right) {
+        if(left + 1 <= 9) {
+          toPush = str.slice(0, i) + (left + 1) + str.slice(i + 1);
+          if(toPush !== str) ans.push(toPush);
+        }
+        if(left - 1 >= 0) {
+          toPush = str.slice(0, i) + (left - 1) + str.slice(i + 1);
+          if(toPush !== str) ans.push(toPush);
+        }
       }
     }
   }
-  const ans = Array.from(visited)
-  ans.sort((a, b) => a - b);
+
   return ans;
 }
 
-function getSteppingNumbers(start, end) {
-  const endLen = end.toString().length;
-  for(let i = start; i <= end; i++) {
-    const numbAsStr = i.toString();
-    if(isSteppingNumber(numbAsStr)) {
-      const src = Array(endLen - numbAsStr.length).fill('0').join('') + numbAsStr;
-      return bfs(src, start, end).map(str => parseInt(str));
+function isStepping(numb) {
+  numb = numb.toString();
+  for(let i = 1; i < numb.length; i++) {
+    if(Math.abs(parseInt(numb[i]) - parseInt(numb[i - 1])) !== 1) return false;
+  }
+  return true;
+}
+
+let visited;
+
+function isValid(str, a, b) {
+  return !visited.has(str) && parseInt(str) >= a && parseInt(str) <= b;
+}
+
+function dfs(node, a, b) {
+  visited.add(node);
+
+  let neighbors = getSteppingNumbersFromNumb(node);
+  for(let i = 0; i < neighbors.length; i++) {
+    if(isValid(neighbors[i], a, b)) {
+      dfs(neighbors[i], a, b);
+    }
+  }
+}
+
+function getSteppingNumbersInRange(a, b) {
+  let start;
+  for(let i = a; i <= b; i++) {
+    if(isStepping(i)) {
+      start = i;
+      break;
     }
   }
 
-  return [];
+  visited = new Set();
+  dfs(start.toString());
+  let ans = Array.from(visited).map(item => parseInt(item));
+  ans.sort();
+  return ans;
 }
 
-console.log(getNextStrings('010'));
+// console.log(getSteppingNumbersInRange(10, 20));
+console.log(isStepping(10));

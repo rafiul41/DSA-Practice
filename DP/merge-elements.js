@@ -1,14 +1,14 @@
-function getMergeCost(arr, start, end, extraCost) {
-  if(start >= end) return 0;
-  let minCost = Number.MAX_SAFE_INTEGER;
-  for(let i = start; i <= end - 1; i++) {
-    const mergeCost = arr[i] + arr[i + 1];
-    const cost = getMergeCost(arr, start, i - 1, mergeCost) + mergeCost + getMergeCost(arr, i + 1, end, mergeCost) + extraCost;
-    minCost = Math.min(minCost, cost);
+function getMergeCost(start, end, arr) {
+  if(end - start === 1) return arr[start] + arr[end];
+  let cost = 0;
+  for(let i = start; i <= end; i++) {
+    let currCost = getMergeCost(start, i) + getMergeCost(i, end);
+    currCost *= 2;
+    cost = Math.min(currCost, cost);
   }
-  return minCost;
+  return cost;
 }
 
-const array = [1, 3, 7];
+const arr = [1, 3, 7];
 
-console.log(getMergeCost(array, 0, array.length - 1, 0));
+console.log(getMergeCost(0, arr.length - 1, arr));

@@ -2,103 +2,47 @@
 
 using namespace std;
 
-int getRecurringSubstringLength(string x) {
-    if(x.length() == 1) {
-        return 1;
-    }
-    char charToMatch = x[0];
-    int possibleSubStringLength = 1;
-    for(int i = 1; i < x.length(); i++) {
-        if(x[i] == charToMatch) {
-            possibleSubStringLength = i;
-            break;
+string getMergeResult(string str1, string str2) {
+    if (str1 == "") return str2;
+    if (str2 == "") return str1;
+    if (str1.find(str2) != string::npos) return str1;
+    if (str2.find(str1) != string::npos) return str2;
+    for (int i = 0; i < str1.length(); i++) {
+        int len = str1.length() - i;
+        if (str2.length() < len) continue;
+        if (str1.substr(i, len) == str2.substr(0, len)) {
+            return str1.substr(0, i) + str1.substr(i, len) + str2.substr(len, str2.length() - len);
         }
     }
+    return str1 + str2;
+}
 
-    if(x.length() % possibleSubStringLength != 0) {
-        return x.length();
-    }
-
-    for(int i = 0; i < possibleSubStringLength; i++) {
-        for(int j = i + possibleSubStringLength; j < x.length(); j += possibleSubStringLength) {
-            if(x[i] != x[j]) {
-                return x.length();
+string func(int mask, int lastInd, vector<string>& arr, unordered_map<string, string> &memo) {
+    string key = to_string(mask) + "/" + to_string(lastInd);
+    if(memo.find(key) != memo.end()) return memo[key];
+    if (__builtin_popcount(mask) == arr.size()) return memo[key] = "";
+    int minLen = 2000;
+    string minStr = "";
+    for (int i = 0; i < arr.size(); i++) {
+        bool isBitOn = mask & (1 << i);
+        if (!isBitOn) {
+            string res = getMergeResult(arr[i], func(mask | (1 << i), i, arr, memo));
+            if (res.length() < minLen) {
+                minStr = res;
+                minLen = res.length();
             }
         }
     }
-
-    return possibleSubStringLength;
+    return memo[key] = minStr;
 }
 
-vector<int> getReqLengths(vector<string> &A) {
-    vector<int> lengths;
-    
-    for(int i = 0; i < A.size(); i++) {
-        lengths.push_back(getRecurringSubstringLength(A[i]));
-    }
-    
-    return lengths;
-}
-
-int getSingleValueOfN(int length) {
-    int ans;
-    long long valueToCheck, i = 1;
-    while(1) {
-        valueToCheck = i * (i + 1);
-        valueToCheck /= 2;
-        if(valueToCheck % length == 0) {
-            ans = i;
-            break;
-        }
-        i++;
-    }
-    return ans;
-}
-
-vector<int> getValuesOfN(vector<int> &reqLengths) {
-    vector<int> timeValues;
-    for(int i = 0; i < reqLengths.size(); i++) {
-        timeValues.push_back(getSingleValueOfN(reqLengths[i]));
-    }
-    return timeValues;
-}
-
-int lcmOfTimeValues(vector<int> timeValues) {
-    int upto = timeValues[0];
-    for(int i = 1; i < timeValues.size(); i++) {
-        upto = max(upto, timeValues[i]);
-    }
-
-    int currFactor = 2, mod = 1000000007;
-    long long res = 1;
-
-    while(currFactor <= upto) {
-        vector<int> indices;
-        for(int i = 0; i < timeValues.size(); i++) {
-            if(timeValues[i] % currFactor == 0) {
-                indices.push_back(i);
-            }
-        }
-
-        if(indices.size() > 1) {
-            for(int i = 0; i < indices.size(); i++) {
-                timeValues[indices[i]] =  timeValues[indices[i]] / currFactor;
-            }
-            res = (res * currFactor) % mod;
-        } else {
-            currFactor++;
-        }
-    }
-
-    for(int i = 0; i < timeValues.size(); i++) {
-        res = (res * timeValues[i]) % mod;
-    }
-
-    return res;
+int getShortestCommonSuperString(vector<string>& arr) {
+    unordered_map<string, string> mp;
+    return func(0, -1, arr, mp).length();
 }
 
 int main() {
-    cout<<INT_MAX<<" "<<INT_MIN<<endl;
-
+    vector<string> vec{"cpsklryvmcpjnbpbwllsrehfmxrkecwitrsglrexvtjmxypunbqfgxmuvgfajclfvenhyuhuorjosamibdnjdb", "yhkbsombltouujdrbwcrrcgbflqpottpegrwvgajcrgwdlpgitydvhedtusippyvxsuvbvfenodqasajoyomgsqcpjlhbm", "ahyviuemkssdsldebesnnngpesdntrrvysuipywatpfoelthrowhfexlwdysvspwlkfblfdfultbwpiqhiymmyal", "yeasvxggfitknygyvjxnspubqjppjbrlhugesmmxwjjlkrmgbnwvftyveolprfdcajiuywtvgfjrwwaakwyprxnxpypj", "tlhfteetxbafkrejsfvrenlebjtccgjvrsdowiixlidxdiixpervseavnwypdinwdrlacvanhelkovked", "axgctwysocddagwnjbkjorpceeyokeskcanvyornrustephpqtbhlrkrxlgjpavrcjpbyhosfimlavbtqcdevpw", "bfgshcmlofmpmektoyfquimnnqujgrgkymfjrsuixixmoihdhoveajsnanyihgsiuyrotnwtxwgmhprqhpvhyqwbgv", "pefxagqqcgovenfsvummecklebihjhtylcalksfnytlfjqafoosssfhwhrfsybsldsyonecmantkhtrvkmqdsxdaqksrlnfpi", "evlikoxebfasdkguoyurbncvgpklfuslrhvevujwcjpiwxfnwafxojwwyhkheesxlpdjmmiqxxywwekvhpwvbtsbdd", "hjdgwujijxqbxpcvojgkqyjoadjdgonobrwxmghwgaaepeagnhtggduihgmpvaewrbwhjggphiuymwibecjmhhvqnkhlk", "kfpiobquradoaplkssmdhvkfnapumdiwiahwcbtvbykdoxnkscpbycgmcyhqcrqksxjubfqdedisdwfwyuaawi", "chvsjojvjkhelmwqqcamhyrexpgbopnqwmmjdvfmgpqucpltrlibmagnrooheeaeqmntlugtkyopobliotkcvspojgxo", "xucnixyffssgkixlvicpuglpxaaeaoryjtottnbbitiseggaqlrmrecsgcyhsqicmwxhmaiwvsqdbyfskxffejxkmytfqck", "biopixnhsgkufpnqnuvrevfsuyynelthtkxfinmetyyboorflpyplgljimwmxstretyojnsdmtfeiyjt", "kmdtamcmmokfkelhedqrvwfselddwauhmyboldbxtlghrrovufqtexmijrmgrjpgituuwvutjbbcvpaswqocqdmavyinlyu", "spqromnxpocngdhevvinaupvwbjiagcuwvolidlarqoytvfrtnhtkarhbepdkuxhqmubpjbiarjvponkexgoxbybfoeplc"};
+    cout<<getShortestCommonSuperString(vec)<<endl;
     return 0;
 }
