@@ -1,3 +1,8 @@
-011
+0, 1 --> sub-array including the 0th ind
+
+
+1 2 3 10 2
+6
+
+1 2 3 4
 100
-101
