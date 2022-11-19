@@ -70,7 +70,6 @@ class AVLTree {
   }
 
   _balance(node) {
-    // left heavy
     const balanceFactor = this._getBalanceFactor(node);
     if (balanceFactor === -2) {
       const leftBalanceFactor = this._getBalanceFactor(node.left);

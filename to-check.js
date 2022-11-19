@@ -1,2 +1,3 @@
-let a = 'b\t"a"';
-console.log(a);
+let arr = [1, 2, 3];
+arr.shift();
+console.log(arr);

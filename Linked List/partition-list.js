@@ -32,5 +32,5 @@ head.next.next.next = new Node(2);
 head.next.next.next.next = new Node(5);
 head.next.next.next.next.next = new Node(2);
 
-let z = partitionList(head, 3);
+let z = partitionList(head);
 console.log(z.data);

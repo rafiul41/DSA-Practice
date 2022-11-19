@@ -1,23 +1,19 @@
-let sides = [], mod = 1e9 + 7;
-
-function getCnt(start, end, toCheck) {
-  while(start < end) {
-    if(sides[start] + sides[end] > toCheck) {
-      return end - start;
+function countTriangles(sideLengths) {
+  let ans = 0, mod = 1e9 + 7;
+  for(let i = sideLengths.length - 1; i >= 2; i--) {
+    let p1 = 0, p2 = i - 1;
+    while(p1 < p2) {
+      if(sideLengths[p1] + sideLengths[p2] > sideLengths[i]) {
+        ans += (p2 - p1);
+        ans %= mod;
+        p2--;
+      } else {
+        p1++;
+      }
     }
-    start++;
   }
-}
 
-function getTrianglesCnt(arr) {
-  sides = arr;
-  sides.sort((a, b) => a - b);
-  let ans = 0;
-  for(let i = sides.length - 1; i >= 2; i--) {
-    ans += getCnt(0, i - 1, sides[i]);
-    ans %= mod;
-  }
   return ans;
 }
 
-console.log(getTrianglesCnt[1, 1, 1, 2, 2]);
+console.log(countTriangles([1, 2, 3, 4, 5, 6]));
