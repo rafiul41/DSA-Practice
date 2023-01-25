@@ -1,10 +1,10 @@
-String.prototype.reverse = function() {
-  let reversed = '';
-  for(let i = this.length - 1; i >= 0; i--) {
-    reversed += this.charAt(i);
-  }
-  return reversed;
-}
+// String.prototype.reverse = function() {
+//   let reversed = '';
+//   for(let i = this.length - 1; i >= 0; i--) {
+//     reversed += this.charAt(i);
+//   }
+//   return reversed;
+// }
 
 function getPiTableLastVal(str) {
   let piTable = Array(str.length).fill(0);

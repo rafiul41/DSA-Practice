@@ -2,47 +2,67 @@
 
 using namespace std;
 
-string getMergeResult(string str1, string str2) {
-    if (str1 == "") return str2;
-    if (str2 == "") return str1;
-    if (str1.find(str2) != string::npos) return str1;
-    if (str2.find(str1) != string::npos) return str2;
-    for (int i = 0; i < str1.length(); i++) {
-        int len = str1.length() - i;
-        if (str2.length() < len) continue;
-        if (str1.substr(i, len) == str2.substr(0, len)) {
-            return str1.substr(0, i) + str1.substr(i, len) + str2.substr(len, str2.length() - len);
-        }
-    }
-    return str1 + str2;
-}
+struct RandomListNode {
+	int label;
+	RandomListNode* next, * random;
+	RandomListNode(int x): label(x), next(NULL), random(NULL) {}
+};
 
-string func(int mask, int lastInd, vector<string>& arr, unordered_map<string, string> &memo) {
-    string key = to_string(mask) + "/" + to_string(lastInd);
-    if(memo.find(key) != memo.end()) return memo[key];
-    if (__builtin_popcount(mask) == arr.size()) return memo[key] = "";
-    int minLen = 2000;
-    string minStr = "";
-    for (int i = 0; i < arr.size(); i++) {
-        bool isBitOn = mask & (1 << i);
-        if (!isBitOn) {
-            string res = getMergeResult(arr[i], func(mask | (1 << i), i, arr, memo));
-            if (res.length() < minLen) {
-                minStr = res;
-                minLen = res.length();
-            }
-        }
-    }
-    return memo[key] = minStr;
-}
+RandomListNode* func(RandomListNode *head) {
+	RandomListNode* curr = head;
+	while(curr != NULL) {
+		RandomListNode *node = new RandomListNode(curr->label);
+		RandomListNode *tmp = curr->next;
+		curr->next = node;
+		node->next = tmp;
+		curr = tmp;
+	}
+	
+	curr = head;
+	while(curr != NULL) {
+		curr->next->random = curr->random->next;
+		curr = curr->next->next;
+	}
 
-int getShortestCommonSuperString(vector<string>& arr) {
-    unordered_map<string, string> mp;
-    return func(0, -1, arr, mp).length();
+	RandomListNode *ans = head->next;
+	curr = ans;
+	while(curr->next != NULL) {
+		curr->next = curr->next->next;
+		curr = curr->next;
+	}
+
+	return ans;
 }
 
 int main() {
-    vector<string> vec{"cpsklryvmcpjnbpbwllsrehfmxrkecwitrsglrexvtjmxypunbqfgxmuvgfajclfvenhyuhuorjosamibdnjdb", "yhkbsombltouujdrbwcrrcgbflqpottpegrwvgajcrgwdlpgitydvhedtusippyvxsuvbvfenodqasajoyomgsqcpjlhbm", "ahyviuemkssdsldebesnnngpesdntrrvysuipywatpfoelthrowhfexlwdysvspwlkfblfdfultbwpiqhiymmyal", "yeasvxggfitknygyvjxnspubqjppjbrlhugesmmxwjjlkrmgbnwvftyveolprfdcajiuywtvgfjrwwaakwyprxnxpypj", "tlhfteetxbafkrejsfvrenlebjtccgjvrsdowiixlidxdiixpervseavnwypdinwdrlacvanhelkovked", "axgctwysocddagwnjbkjorpceeyokeskcanvyornrustephpqtbhlrkrxlgjpavrcjpbyhosfimlavbtqcdevpw", "bfgshcmlofmpmektoyfquimnnqujgrgkymfjrsuixixmoihdhoveajsnanyihgsiuyrotnwtxwgmhprqhpvhyqwbgv", "pefxagqqcgovenfsvummecklebihjhtylcalksfnytlfjqafoosssfhwhrfsybsldsyonecmantkhtrvkmqdsxdaqksrlnfpi", "evlikoxebfasdkguoyurbncvgpklfuslrhvevujwcjpiwxfnwafxojwwyhkheesxlpdjmmiqxxywwekvhpwvbtsbdd", "hjdgwujijxqbxpcvojgkqyjoadjdgonobrwxmghwgaaepeagnhtggduihgmpvaewrbwhjggphiuymwibecjmhhvqnkhlk", "kfpiobquradoaplkssmdhvkfnapumdiwiahwcbtvbykdoxnkscpbycgmcyhqcrqksxjubfqdedisdwfwyuaawi", "chvsjojvjkhelmwqqcamhyrexpgbopnqwmmjdvfmgpqucpltrlibmagnrooheeaeqmntlugtkyopobliotkcvspojgxo", "xucnixyffssgkixlvicpuglpxaaeaoryjtottnbbitiseggaqlrmrecsgcyhsqicmwxhmaiwvsqdbyfskxffejxkmytfqck", "biopixnhsgkufpnqnuvrevfsuyynelthtkxfinmetyyboorflpyplgljimwmxstretyojnsdmtfeiyjt", "kmdtamcmmokfkelhedqrvwfselddwauhmyboldbxtlghrrovufqtexmijrmgrjpgituuwvutjbbcvpaswqocqdmavyinlyu", "spqromnxpocngdhevvinaupvwbjiagcuwvolidlarqoytvfrtnhtkarhbepdkuxhqmubpjbiarjvponkexgoxbybfoeplc"};
-    cout<<getShortestCommonSuperString(vec)<<endl;
-    return 0;
+	RandomListNode* one = new RandomListNode(1);
+	RandomListNode* two = new RandomListNode(2);
+	RandomListNode* three = new RandomListNode(3);
+
+	one->next = two;
+	two->next = three;
+	
+	one->random = three;
+	two->random = one;
+	three->random = one;
+
+	// RandomListNode *ans = func(one);
+
+	cout<<"end"<<endl;
+
+vector<int> A{3, 2, 1, 4, 1};
+
+	unordered_set<int> s;
+	int ans = 1;
+	for(int i = 0; i < A.size(); i++) {
+			if(s.find(A[i]) != s.end()) {
+					s.clear();
+					ans++;
+			}
+			s.insert(A[i]);
+	}
+
+	cout<<ans<<endl;
+
+	return 0;
 }
