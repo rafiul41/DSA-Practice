@@ -5,6 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug Typescript",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "program": "${workspaceFolder}\\debug.ts",
+            "runtimeArgs": ["-r", "ts-node/register", "-r", "tsconfig-paths/register"],
+            "console": "integratedTerminal",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        },
+        {
             "type": "pwa-node",
             "request": "launch",
             "name": "Launch Program",

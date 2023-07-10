@@ -1,0 +1,25 @@
+{
+  "name": "dsa-practice",
+  "version": "1.0.0",
+  "main": "debug.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafiul41/DSA-Practice.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rafiul41/DSA-Practice/issues"
+  },
+  "homepage": "https://github.com/rafiul41/DSA-Practice#readme",
+  "keywords": [],
+  "description": "",
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.1.6"
+  }
+}

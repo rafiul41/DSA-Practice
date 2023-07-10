@@ -1,6 +1,7 @@
 {
   "editor.tabSize": 2,
   "cSpell.words": [
+    "Cnts",
     "curr",
     "mult",
     "Occurence",
@@ -10,10 +11,15 @@
   "editor.minimap.enabled": false,
   "files.associations": {
     "ostream": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "cstdlib": "cpp",
+    "new": "cpp"
   },
   "editor.defaultFormatter": "ms-vscode.cpptools",
   "[cpp]": {
     "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
   }
 }
