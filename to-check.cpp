@@ -90,17 +90,22 @@ int main() {
 	// 	cout<<it->first<<" "<<it->second<<endl;
 	// }
 
-	priority_queue<int> pq;
-	pq.push(3);
-	pq.push(1);
-	pq.push(6);
-	pq.push(3);
+	priority_queue<pair<int, int>> pq;
+	pq.push(make_pair(3, 3));
+	pq.push(make_pair(1, 3));
+	pq.push(make_pair(6, 3));
+	pq.push(make_pair(3, 3));
 
 	while(!pq.empty()) {
-		int front = pq.top();
-		cout<<front<<endl;
+		pair<int, int> front = pq.top();
+		cout<<front.first<<" "<<front.second<<endl;
 		pq.pop();
 	}
+
+	// string a = "abc";
+	// string b = a;
+	// b[0] = 'a' + 6;
+	// cout<<a<<b<<endl;
 
 	return 0;
 }

@@ -1,29 +1,34 @@
-class ListNode {
-  val: number;
-  next: ListNode | null;
-  constructor(val?: number, next?: ListNode | null) {
-    this.val = val === undefined ? 0 : val;
-    this.next = next === undefined ? null : next;
+function reverse(nums: number[], start: number, end: number): void {
+  while (start < end) {
+    [nums[start], nums[end]] = [nums[end], nums[start]];
+    start++;
+    end--;
   }
 }
 
-function hasCycle(head: ListNode | null): boolean {
-  if (head === null) return false;
-  let p1 = head;
-  let p2 = head;
-
-  do {
-    if (p1.next === null || p2.next === null || p2.next.next === null)
-      return false;
-    p1 = p1.next;
-    p2 = p2.next.next;
+function nextPermutation(nums: number[]): void {
+  let foundInd = -1;
+  for (let i = nums.length - 1; i >= 1; i--) {
+    if (nums[i - 1] < nums[i]) {
+      foundInd = i - 1;
+      break;
+    }
   }
-  while (p1 !== p2)
-  return true;
+
+  if (foundInd === -1) {
+    reverse(nums, 0, nums.length - 1);
+    return;
+  }
+
+  for (let i = nums.length - 1; i > foundInd; i--) {
+    if (nums[i] > nums[foundInd]) {
+      [nums[i], nums[foundInd]] = [nums[foundInd], nums[i]];
+      reverse(nums, foundInd + 1, nums.length - 1);
+      break;
+    }
+  }
 }
 
-let one = new ListNode(1);
-let two = new ListNode(2);
-one.next = two;
-
-console.log(hasCycle(one));
+let arr = [2, 2, 0, 4, 3, 1];
+nextPermutation(arr);
+console.log(arr);

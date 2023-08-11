@@ -3,8 +3,10 @@
   "cSpell.words": [
     "Cnts",
     "curr",
+    "Inorder",
     "mult",
     "Occurence",
+    "Preorder",
     "upto",
     "Vals"
   ],
@@ -13,7 +15,9 @@
     "ostream": "cpp",
     "vector": "cpp",
     "cstdlib": "cpp",
-    "new": "cpp"
+    "new": "cpp",
+    "sstream": "cpp",
+    "regex": "cpp"
   },
   "editor.defaultFormatter": "ms-vscode.cpptools",
   "[cpp]": {

@@ -2,65 +2,53 @@
 
 using namespace std;
 
-vector<vector<bool>> visited;
-vector<vector<int>> dist;
+int leastInterval(vector<char>& tasks, int n) {
+  vector<int> cnt (26, 0);
+  for(int i = 0; i < tasks.size(); i++) {
+    cnt[tasks[i] - 'A']++;
+  }
 
-vector<int> dirR = {1, -1, 0, 0};
-vector<int> dirC = {0, 0, 1, -1};
+  priority_queue<int> pq;
+  for(int i = 0; i < 26; i++) {
+    if(cnt[i] != 0) {
+      pq.push(cnt[i]);
+    }
+  }
 
-bool isValidCell(int row, int col, vector<vector<int>> &mat) {
-    return row >= 0 && row < mat.size() && col >= 0 && col < mat[0].size() && !visited[row][col] && mat[row][col] == 1;
-}
 
-void bfs(vector<pair<int, int>> &sources, vector<vector<int>> &mat) {
-    dist = vector<vector<int>>(mat.size(), vector<int>(mat[0].size(), INT_MAX));
-    visited = vector<vector<bool>>(mat.size(), vector<bool>(mat[0].size(), false));
-
-    queue<pair<int, int>> q;
-    for(int i = 0; i < sources.size(); i++) {
-        q.push(make_pair(sources[i].first, sources[i].second));
-        dist[sources[i].first][sources[i].second] = 0;
+  int taken = 0, ans = 0;
+  while(true) {
+    vector<int> tmp;
+    int currTaken = 0;
+    for(int i = 0; i < n + 1; i++) {
+      if(pq.empty()) {
+        break;
+      }
+      int top = pq.top();
+      pq.pop();
+      tmp.push_back(top);
+      currTaken++;
+    }
+    taken += currTaken;
+    for(int i = 0; i < tmp.size(); i++) {
+      if(tmp[i] - 1 > 0) {
+        pq.push(tmp[i] - 1);
+      }
     }
 
-    while(!q.empty()) {
-        pair<int, int> top = q.front();
-        q.pop();
-        int ur = top.first;
-        int uc = top.second;
-        visited[ur][uc] = true;
-        for(int i = 0; i < 4; i++) {
-            int vr = ur + dirR[i];
-            int vc = uc + dirC[i];
-            if(isValidCell(vr, vc, mat)) {
-                dist[vr][vc] = min(dist[vr][vc], dist[ur][uc] + 1);
-                q.push(make_pair(vr, vc));
-            }
-        }
+    if(taken == tasks.size()) {
+      ans += currTaken;
+      break;
+    } else {
+      ans += (n + 1);
     }
-}
+  }
 
-vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-    vector<pair<int, int>> sources;
-    for(int i = 0; i < mat.size(); i++) {
-        for(int j = 0; j < mat[0].size(); j++) {
-            if(mat[i][j] == 0) {
-                sources.push_back(make_pair(i, j));
-            }
-        }
-    }
-    bfs(sources, mat);
-    return dist;
+  return ans;
 }
 
 int main() {
-    vector<vector<int>> mat = {
-        {0, 1, 0},
-        {0, 1, 0},
-        {0, 1, 0},
-        {0, 1, 0},
-        {0, 1, 0}
-    };
-    vector<vector<int>> ans = updateMatrix(mat);
-    cout<<"end"<<endl;
-    return 0;
+  vector<char> s = {'A','A','A','A','A','A','B','C','D','E','F','G'};
+  cout<<leastInterval(s, 2);
+  return 0;
 }
