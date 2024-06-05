@@ -1,1 +1,4 @@
 node_modules/
+debug
+debug.dSYM/Contents/Info.plist
+debug.dSYM/Contents/Resources/Relocations/aarch64/debug.yml
