@@ -8,6 +8,4 @@ for(let [a, b] of map) {
   console.log(a, b);
 }
 
-for(let char of arr) {
-  console.log(char);
-}
+console.log('Hello world');
