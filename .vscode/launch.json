@@ -6,12 +6,12 @@
     "configurations": [
         {
             "name": "Debug Typescript",
+            "type": "node",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "type": "node",
-            "program": "${workspaceFolder}\\debug.ts",
+            "program": "${workspaceFolder}/debug.ts",
             "runtimeArgs": ["-r", "ts-node/register", "-r", "tsconfig-paths/register"],
             "console": "integratedTerminal",
             "outFiles": [
@@ -25,7 +25,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\debug.js"
+            "program": "${workspaceFolder}/debug.js"
         }
     ]
 }
