@@ -17,7 +17,10 @@
     "cstdlib": "cpp",
     "new": "cpp",
     "sstream": "cpp",
-    "regex": "cpp"
+    "regex": "cpp",
+    "exception": "cpp",
+    "complex": "cpp",
+    "system_error": "cpp"
   },
   "editor.defaultFormatter": "ms-vscode.cpptools",
   "[cpp]": {
