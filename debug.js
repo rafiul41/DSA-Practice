@@ -1,7 +1,3 @@
-let map = new Map();
-map.set('a', 2);
-map.set('b', 3);
+let a = "hello at world";
 
-for(let [a, b] of map) {
-  console.log(a, b);
-}
+console.log(a.split('at').map(a => a.trim()));
