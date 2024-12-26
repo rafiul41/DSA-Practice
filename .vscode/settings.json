@@ -3,6 +3,7 @@
   "cSpell.words": [
     "Cnts",
     "curr",
+    "Dists",
     "Inorder",
     "mult",
     "Occurence",
@@ -20,7 +21,19 @@
     "regex": "cpp",
     "exception": "cpp",
     "complex": "cpp",
-    "system_error": "cpp"
+    "system_error": "cpp",
+    "scoped_allocator": "cpp",
+    "__split_buffer": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "queue": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "tuple": "cpp",
+    "iostream": "cpp",
+    "unordered_set": "cpp",
+    "unordered_map": "cpp"
   },
   "editor.defaultFormatter": "ms-vscode.cpptools",
   "[cpp]": {
